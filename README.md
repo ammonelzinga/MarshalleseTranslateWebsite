@@ -3,4 +3,4 @@ my first repo
 
 another change
 
-Creating a conflict hahahah
+This is super cool! 
