@@ -17,3 +17,8 @@ Ability to use a basic translation feature for some common phrases/words
 Ability to select the 'friends' page to see other users progress
 The progress of the flashcards will be save with their account. 
 
+![325044014_2159605524248028_3713388484677014945_n](https://user-images.githubusercontent.com/123523238/215225773-5a045152-cf2d-4abc-ac01-76427fd74635.jpg)
+
+![325508842_2848545385275725_4877397579029870135_n](https://user-images.githubusercontent.com/123523238/215225785-6a714c9c-06b2-467d-8ab3-248f3c1e2f45.jpg)
+
+![324763463_544165247680560_7013730422290124581_n](https://user-images.githubusercontent.com/123523238/215225790-713bf980-885d-4e40-b7ef-8d293a74b4b6.jpg)
