@@ -22,3 +22,7 @@ The progress of the flashcards will be save with their account.
 ![325508842_2848545385275725_4877397579029870135_n](https://user-images.githubusercontent.com/123523238/215225785-6a714c9c-06b2-467d-8ab3-248f3c1e2f45.jpg)
 
 ![324763463_544165247680560_7013730422290124581_n](https://user-images.githubusercontent.com/123523238/215225790-713bf980-885d-4e40-b7ef-8d293a74b4b6.jpg)
+
+
+AWS: IP Address: http://18.119.120.226/
+Git Bash console instructions: ssh -i (then insert key pair file name located in downloads of user ammon) ubuntu@18.119.120.226
