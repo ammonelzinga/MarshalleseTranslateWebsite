@@ -26,3 +26,5 @@ The progress of the flashcards will be save with their account.
 
 AWS: IP Address: http://18.119.120.226/
 Git Bash console instructions: ssh -i (then insert key pair file name located in downloads of user ammon) ubuntu@18.119.120.226
+
+the new ip is 18.189.65.19
