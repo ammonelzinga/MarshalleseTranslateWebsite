@@ -28,3 +28,11 @@ AWS: IP Address: http://18.119.120.226/
 Git Bash console instructions: ssh -i (then insert key pair file name located in downloads of user ammon) ubuntu@18.119.120.226
 
 the new ip is 18.189.65.19
+
+This code particularly the first one is important to connect to bootstrap. It might not be as applicalble once bootstrap is downloaded to my computer. 
+href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+      crossorigin="anonymous"
+      
+In the main.css file you can edit the different selectors/sections (headers, footers, main, body, etc) and then in the html files, you can connect to bootstrap buttons and such using class "". 
