@@ -36,3 +36,5 @@ href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
       crossorigin="anonymous"
       
 In the main.css file you can edit the different selectors/sections (headers, footers, main, body, etc) and then in the html files, you can connect to bootstrap buttons and such using class "". 
+
+Remember to get the up to date bootstrap links, and use the proper ones to get the right features. Make sure to have an index.html to allow for the deployfile to work properly. 
