@@ -32,13 +32,12 @@ main section:nth-child(1) label {
     /* width: 378px; */
     
   }
-  main section:nth-child(2) label {
+  main section:nth-child(3) label {
     
     background-clip: border-box; 
     background-color: lightskyblue;
     border: 3px transparent;
     border-radius: 10px 10px 10px;
-    
     text-align: center;
 
   }

@@ -5,13 +5,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Home</title>
         <link rel="stylesheet" href="main.css" />
-
+        <script src="main.js"></script>
+        <script src="mydictionary.js"></script>
         <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
       crossorigin="anonymous"
+      
     />
+
     </head>
     <body class="text-dark">
       <header class="bg-secondary container-fluid fixed-top">
@@ -46,12 +49,15 @@
           <label for="textarea">English: </label>
           <br>
       </br>
-        <textarea id="textarea" name="varTextarea"></textarea> 
+        <textarea id="textarea" name="varTextarea" placeholder="Type Here..." ></textarea> 
+        </section><section> 
+        <input type = "button" value = "Translate"   class="btn btn-primary bg-secondary" onclick = "marshallese_translate()" /> 
+       
         </section>
         <section>
         <label for="textarea">Marshallese: </label>
         <br></br>
-          <textarea id="textarea" name="varTextarea"></textarea>
+          <textarea id="output" name="varTextarea" onkeydown="return false"> </textarea>
           </section>
       <!-- <section> -->
       <!-- <div class="input-group"> -->
