@@ -9,6 +9,12 @@ You can use the value of an element as a toggle.
 
 You should only have one id per element, but you can access multiple elements at once using things getelementsbyclass feature. 
 
+if the javascript file isn't working or has a syntax error the elements in relation to that javascript page won't show even if they are for different functions. 
+
+You can use getelementbyid for quick changes to the values of elements. When I say value in this sense, I am meaning the innerHTML or innerTEXT. 
+
+
+
 another change
 
 This is super cool! I learned a lot! This is the first time I have pushed and pulled from my very own repository on github! I like how you can commit changes and push them and even request to push them on other peoples repos as well! 
