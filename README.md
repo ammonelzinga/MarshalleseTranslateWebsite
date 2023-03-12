@@ -1,6 +1,14 @@
 # first_repo
 my first repo 
 
+Javascript notes:
+
+You can only use onload element listener with certain elements of html with javascript. You can change the default bootstrap colors using $warning = 'orange', etc before inserting the bootstrap link (still need to attempt that successfully) 
+
+You can use the value of an element as a toggle. 
+
+You should only have one id per element, but you can access multiple elements at once using things getelementsbyclass feature. 
+
 another change
 
 This is super cool! I learned a lot! This is the first time I have pushed and pulled from my very own repository on github! I like how you can commit changes and push them and even request to push them on other peoples repos as well! 
