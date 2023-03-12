@@ -2,6 +2,7 @@ body {
     display: flex;
     flex-direction: column;
     min-width: 375px;
+    background-color: rgb(244, 244, 244);
 }
 
 header{
@@ -48,6 +49,33 @@ textarea{
     background-color: lightcyan;
 }
 
+input.question{
+background-color: lightsalmon;
+padding-right: 18px; 
+padding-left: 18px; 
+margin-right: 40px; 
+padding-top: 5px; 
+padding-bottom: 5px; 
+border-radius: 10px 10px 10px 
+}
+
+input.flip{
+    margin-top: 37px; 
+    background-color: lightgrey;
+    padding-right: 20px ;
+    padding-left: 20px; 
+    padding-top: 10px;
+    padding-bottom: 10px; 
+    border-radius: 10px 10px 10px; 
+}
+input.checkmark{
+    background-color: lightskyblue; 
+    padding-left: 18px;
+    padding-right: 18px; 
+    padding-top: 5px;
+    padding-bottom: 5px; 
+    border-radius: 10px 10px 10px; 
+}
 
 label{
     display:block;
@@ -74,6 +102,14 @@ menu .nav-item{
     padding-right: 50px;
 
 }
+
+/* div.onetothree{
+    display: none; 
+} */
+
+/* #Hello_number {
+    background-color: lightgreen; 
+} */
 
 @media (max-height: 600px){
     header{

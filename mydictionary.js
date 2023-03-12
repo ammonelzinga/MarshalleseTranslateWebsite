@@ -80,11 +80,14 @@ const my_dictionary_phrase =  {'howareyou' : "ej et am mour",
  'whenyouarent': 'ne ejjelok am', 
  'youarenot' : 'Kwoj jab',
  'itis' : 'Ej',
- 'youwill': 'Kwonaaj'
+ 'youwill': 'Kwonaaj', 
+ 'howdoyou': 'Elman am'
 
 }; 
 
 const my_dictionary_word = {'ability' : 'maroñ', 'turtle': 'won', 'hey': 'yokwe',
+"how": 'Elman', 
+'bathroom': 'Mon kopojak',
 'hi' : 'Yokwe',
 'it' : 'ej',
 'its' : 'ej', 
@@ -236,7 +239,8 @@ const my_dictionary_word = {'ability' : 'maroñ', 'turtle': 'won', 'hey': 'yokwe
 'go' : 'etal',
 'come': 'itok', 
 'arrive': 'itok', 
-'eat':  'food',
+'eat':  'mona',
+'food': 'mona', 
 'drink': 'idaak',
 'say': ' ba',
 'thank you': 'komool', 
