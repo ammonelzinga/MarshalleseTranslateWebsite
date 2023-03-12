@@ -81,12 +81,17 @@ const my_dictionary_phrase =  {'howareyou' : "ej et am mour",
  'youarenot' : 'Kwoj jab',
  'itis' : 'Ej',
  'youwill': 'Kwonaaj', 
- 'howdoyou': 'Elman am'
+ 'howdoyou': 'Elman am', 
+ 'howis': 'ej et', 
+ 'whyis': 'ejaam', 
+ 'whyarethey': 'rejaam', 
+
 
 }; 
 
 const my_dictionary_word = {'ability' : 'maroñ', 'turtle': 'won', 'hey': 'yokwe',
 "how": 'Elman', 
+'weather': 'mejatoto',
 'bathroom': 'Mon kopojak',
 'hi' : 'Yokwe',
 'it' : 'ej',
