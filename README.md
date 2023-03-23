@@ -1,6 +1,79 @@
 # first_repo
 my first repo 
 
+Service notes: 
+
+      The service code allows us to use express package and node.js which help us be able to store data into a server. This allows the scores to be seen by everybody and not just locally. I'm really excited to implement this in my start up project. 
+      
+      I really liked the steps given in the assignment so I wanted to list them here: 
+     1)  Move all the previous deliverable code files (_.html, _.js, *.css, favicon.ico, and asserts) into a sub-directory named public. We will use the HTTP Node.js based service to host the front-end application files. This is done with the static file middleware that we will add our service index.js. 
+      
+      2) Within the project directory run npm init -y. This configures the directory to work with node.js.
+
+      3) Modify or create .gitignore to ignore node_modules.
+            in the .gitignore file you can literally just type node.modules/ 
+      
+      4)Install the Express package by running npm install express. This will write the Express package dependency in the package.json file and install all the Express code to the node_modules directory.
+      
+      This is nice because it does a lot of the hard work for you. I believe this is how the package.json and package-lock.json is generated. 
+      
+      5) Create a file named index.js in the root of the project. This is the entry point that node.js will call when you run your web service.
+           I think my start up already has an index.js so I"ll need to remember to change that file name before I complete this first step in my start up. 
+           
+      6) Add the basic Express JavaScript code needed to host the application static content and the desired endpoints.
+      
+            Some of the generic code that I think will be applicable to my start up project is this: 
+            
+            const express = require('express');   (using express package) 
+            const app = express();
+
+            // The service port. In production the front-end code is statically hosted by the service on the same port.
+            const port = process.argv.length > 2 ? process.argv[2] : 3000; (So this is checking to make sure the argv has a 2 index. I need to ask if the 2 index is code content in the whole folder? Or if it is directed to index.js or port 3000 or how that works. 
+
+            // JSON body parsing using built-in middleware
+            app.use(express.json());
+
+            // Serve up the front-end static content hosting
+            app.use(express.static('public'));  (The public folder contains all of our html and css and js code that we've done before, so I think the app.use is sort of like saying we want to have the folder 'public' in our app.) 
+
+            // Router for service endpoints
+            const apiRouter = express.Router();    (I think this helps us access the server and the data stored there later on. I believe the '/api' will generally be             app.use(`/api`, apiRouter);            what you pass into app.use('/api', apiRouter)). 
+            
+            I'll have to edit my scores function just as we did with the simon. 
+            
+            // GetScores
+            apiRouter.get('/scores', (_req, res) => {     (So to access the scores already in saved we need to use apiRouter.get('/scores, (_req, res). I believe the                res.send(scores);                             req stands for request and the res stands for response. So when we type res.send(scores). I think the res                   });                                        is sort of like the return statement. So it's almost like saying return scores.)
+            
+                         
+
+            // SubmitScore
+            apiRouter.post('/score', (req, res) => {       (Here we can use apiRouter.post which will basically update the score. The updateScores function will give                scores = updateScores(req.body, scores);      us the updated scores, and in later code this is called to display it on html. But I think the                              res.send(scores);                            res.send(scores) is sending it back to the server or port so that it is also updated globally) 
+                        
+           
+                              });
+
+            // Return the application's default page if the path is unknown      (This is super important because it basically gives the default page, for my startup
+            app.use((_req, res) => {                                              I'd want that to be index.html as well.) 
+            res.sendFile('index.html', { root: 'public' });
+                                    });
+
+            app.listen(port, () => {
+            console.log(`Listening on port ${port}`);                             (Is this necessary? I need to ask the TA if we have to have the listening function)
+                                          });
+            
+      
+      7) Modify the Simon application code to make service endpoint requests to our newly created HTTP service code.
+            This is found in the scroes.js file. I'll write down what the new changes looks like: 
+            async function loadScores() {
+  const response = await fetch("/api/scores")
+  const scores = await response.json()
+
+  // Modify the DOM to display the scores
+  
+          So I believe the api is the place where everything is stored on the server. I need to learn more if this server is from Amazon Web Servies itself? The port 3000? Remember to ask the TA about that for clarification. 
+          
+          
+     
 Javascript notes:
 
 You can only use onload element listener with certain elements of html with javascript. You can change the default bootstrap colors using $warning = 'orange', etc before inserting the bootstrap link (still need to attempt that successfully) 
