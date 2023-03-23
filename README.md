@@ -37,30 +37,43 @@ Service notes:
             app.use(express.static('public'));  (The public folder contains all of our html and css and js code that we've done before, so I think the app.use is sort of like saying we want to have the folder 'public' in our app.) 
 
             // Router for service endpoints
-            const apiRouter = express.Router();    (I think this helps us access the server and the data stored there later on. I believe the '/api' will generally be             app.use(`/api`, apiRouter);            what you pass into app.use('/api', apiRouter)). 
+            const apiRouter = express.Router(); 
+            
+            (I think this helps us access the server and the data stored there later on. I believe the '/api' will generally be             app.use(`/api`, apiRouter);            what you pass into app.use('/api', apiRouter)). 
             
             I'll have to edit my scores function just as we did with the simon. 
             
             // GetScores
-            apiRouter.get('/scores', (_req, res) => {     (So to access the scores already in saved we need to use apiRouter.get('/scores, (_req, res). I believe the                res.send(scores);                             req stands for request and the res stands for response. So when we type res.send(scores). I think the res                   });                                        is sort of like the return statement. So it's almost like saying return scores.)
+            apiRouter.get('/scores', (_req, res) => {    
+              res.send(scores); 
+                  });  
+            
+            (So to access the scores already in saved we need to use apiRouter.get('/scores, (_req, res). I believe the req stands for request and the res stands for response. So when we type res.send(scores). I think the res is sort of like the return statement. So it's almost like saying return scores.)
             
                          
 
             // SubmitScore
-            apiRouter.post('/score', (req, res) => {       (Here we can use apiRouter.post which will basically update the score. The updateScores function will give                scores = updateScores(req.body, scores);      us the updated scores, and in later code this is called to display it on html. But I think the                              res.send(scores);                            res.send(scores) is sending it back to the server or port so that it is also updated globally) 
+            apiRouter.post('/score', (req, res) => { 
+            scores = updateScores(req.body, scores); 
+            res.send(scores);
+             });
+             
+            (Here we can use apiRouter.post which will basically update the score. The updateScores function will give us the updated scores, and in later code this is called to display it on html. But I think the  res.send(scores) is sending it back to the server or port so that it is also updated globally) 
                         
-           
-                              });
-
-            // Return the application's default page if the path is unknown      (This is super important because it basically gives the default page, for my startup
-            app.use((_req, res) => {                                              I'd want that to be index.html as well.) 
-            res.sendFile('index.html', { root: 'public' });
-                                    });
-
-            app.listen(port, () => {
-            console.log(`Listening on port ${port}`);                             (Is this necessary? I need to ask the TA if we have to have the listening function)
-                                          });
+          
+            // Return the application's default page if the path is unknown  
+            app.use((_req, res) => { 
+             res.sendFile('index.html', { root: 'public' });
+              });
             
+            (This is super important because it basically gives the default page, for my startup I'd want that to be index.html as well.) 
+           
+                                  
+            app.listen(port, () => {
+            console.log(`Listening on port ${port}`);   
+             });
+            (Is this necessary? I need to ask the TA if we have to have the listening function)
+                                        
       
       7) Modify the Simon application code to make service endpoint requests to our newly created HTTP service code.
             This is found in the scroes.js file. I'll write down what the new changes looks like: 
