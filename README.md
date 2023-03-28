@@ -1,6 +1,90 @@
 # first_repo
 my first repo 
 
+simon-login notes: 
+
+This is probably the coolest part. I've been able to learn so much from the lecture with cookies and tokens! 
+
+I will need to edit my html functions and css to include an interface for usernames and password. 
+
+Will need to create another variable from the instance client from the MongoClient class for the user. 
+
+A couple simple functions to get the email and token: 
+
+function getUser(email) {
+return userCollection.findOne({email: email)}; 
+}
+the findone function can take the 'email' typed out and find it from the database. 
+
+We will need to have a createUser function that includes awaits, a bcrypt.hash (remember to download the bcrypt package). 
+
+Just remember that insertOne can also automatically add new information. this is why we use it in the craetUser function. 
+
+for index.js notes: 
+This is where the cookie fun comes into play. 
+
+The apirouter.post will be used to check for when someone is creating a new account. It needs to first check if there is an existing user. it uses res.status(409), which simply represents "conflict." Then simply call our database function by saying DB.createuser(req.body.email, req.body.password); 
+
+We also need to now call setAuthoCookie(res, user.token); 
+And then res.send({
+id: user._id, 
+}); 
+
+Now for checking if a login attempt matches their username and password. We get to use the super fancy bcrypt package to do this since the passwords are encrypted. 
+
+This is super important and I want to copy and paste it here, basically if the password matches up, then we can call the setAuthCookies function. 
+
+This keeps the cookie safe and secure. 
+
+apiRouter.post('/auth/login', async (req, res) => {
+  const user = await DB.getUser(req.body.email);
+  if (user) {
+    if (await bcrypt.compare(req.body.password, user.password)) {
+      setAuthCookie(res, user.token);
+      res.send({ id: user._id });
+      return;
+    }
+  }
+  res.status(401).send({ msg: 'Unauthorized' });
+});
+
+Here's another function that I think I will need for my startup. I'm still trying to learn it so I want to paste it here as well. I do know that this makes the program more safe. 
+
+// secureApiRouter verifies credentials for endpoints
+var secureApiRouter = express.Router();
+apiRouter.use(secureApiRouter);
+
+secureApiRouter.use(async (req, res, next) => {
+  authToken = req.cookies[authCookieName];
+  const user = await DB.getUserByToken(authToken);
+  if (user) {
+    next();
+  } else {
+    res.status(401).send({ msg: 'Unauthorized' });
+  }
+});
+
+All of this code comes into play when we use them in login.js 
+
+An important one: 
+
+if (response?.status === 200) {
+    localStorage.setItem('userName', userName);
+    window.location.href = 'play.html';
+  } else {
+    const modalEl = document.querySelector('#msgModal');
+    modalEl.querySelector('.modal-body').textContent = `⚠ Error: ${body.msg}`;
+    const msgModal = new bootstrap.Modal(modalEl, {});
+    msgModal.show();
+  }
+}
+
+This will check to make sure that the cookies are all good and set and authorized (response?.status ===200). I love how we can't even look at the cookie, but we don't need to because the browser knows its good and send the 200. 
+
+We create a logOrCreate function that will basically take the input from the username and password boxes. If they are good, then it'll go to play.html and the user will be logged in!
+
+Remeber that we can take a look at atlas to see the usernames that have been added. This will help me as I create the startup so I can see how the data is stored. The third party resources and code packages really smooth the encrypting, data storing, and data transferring to be quite smooth. 
+
 Simon DB notes:
 
 Atlas login email is ammonelzinga@gmail.com
