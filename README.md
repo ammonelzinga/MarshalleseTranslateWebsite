@@ -1,6 +1,65 @@
 # first_repo
 my first repo 
 
+Simon DB notes:
+
+Atlas login email is ammonelzinga@gmail.com
+you can go to connect to get the hostname (it ends in .net). 
+
+To update your user, password, and hostname credentials on the production environment you can use this code in the terminal or git bash: 
+
+ssh -i ~/keys/production.pem ubuntu@myfunkychickens.click
+
+sudo vi /etc/environment
+
+export MONGOUSER=<yourmongodbusername>
+export MONGOPASSWORD=<yourmongodbpassword>
+export MONGOHOSTNAME=<yourmongodbhostname>
+      
+Remember the :w or :wq and the ZZ helps you get out of editing it. press i to insert. 
+     
+Okay to connect to the database we need to first make some functions in a file we can call database.js. We will call these functions in the index.js file which used express to globally store the scores. 
+      
+ The first thing you want to do is a safety feature so that only you who has the right credentials can make changes. It goes as follows: 
+      
+const {MongoClient} = require('mongodb');
+
+const userName = process.env.MONGOUSER;
+const password = process.env.MONGOPASSWORD;
+const hostname = process.env.MONGOHOSTNAME;
+
+if (!userName) {
+  throw Error('Database not configured. Set environment variables');
+}
+
+Next we can copy down the connection url from our atlas website. Remember to have the local IP address accessible. 
+      
+const url = `......'; 
+      
+We can now make an instance of the class MongoClient form that url variable. 
+      
+const client = new MongoClient(url); 
+
+In addition we need to help the mongo db know where in our database we want to store the following information. We want it to be a in a database called 'simon.' so to do that we can use client.db('simon'). Further more we want to make a collection. A collection is similar to a list of tables to store information. So we can input our scores data in a collection. 
+      
+we do: 
+      
+const scoreCollection = client.db('simon').collection('score'); 
+
+Now we can make some functions. Some functions to remember are insertone and toArray and find.  
+      
+insertone will allow us to update a document/table into our collections of 'score'. 
+toArray helps the rest of our code process the data from the collection to display it because it's in array format. 
+      
+Also good to remember is the syntax for >. We do $gt: for >. (a quick google search will bring examples of further syntax). 
+      
+There are properties as well in mongo. We use 1) sort and 2) limit in this simon example. These help us when we use the find function because we can pass these properties in to help us filter what data we want to be in our array. 
+      
+At the end we need to use module.exports(pass in our functions) so that node.js knows which functions to be able to pull out from this file.  
+ 
+      
+      
+      
 Service notes: 
 
       The service code allows us to use express package and node.js which help us be able to store data into a server. This allows the scores to be seen by everybody and not just locally. I'm really excited to implement this in my start up project. 
