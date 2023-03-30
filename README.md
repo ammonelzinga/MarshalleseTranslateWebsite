@@ -1,6 +1,148 @@
 # first_repo
 my first repo 
 
+simon websocket note: 
+
+Always remember to npm install, you may need to npm install ws. also npm init -y
+
+The websocket still uses HTTP but it is an 'upgrade'. You need to use a wss.handleUpgrade to get a socket to upgrade to websocket so that you can have communication back and forth between the server and the client. In this way they become peers. 
+
+So we need to add code for the server end of things and the client end of things. 
+
+We need to import ws first: const { WebSocketServer } = require('ws'); 
+
+When making an instance of of WebSocketServer you have the option to set 'noServer' to true. This will require you to manually include upgrade code but allows you to use your own server? I believe: 
+
+ex: 
+const wss = new WebSocketServer({ noServer: true });
+
+We also need to manually upgrade the connection to be Websocket: 
+
+// Handle the protocol upgrade from HTTP to WebSocket
+    httpServer.on('upgrade', (request, socket, head) => {
+      wss.handleUpgrade(request, socket, head, function done(ws) {
+        wss.emit('connection', ws, request);
+      });
+    });
+    
+you can use ws.on as an event listener. you can use ws.onmessage or .onclose or .onopen, etc. You can also do ws.on('message'...) I'm actually not sure what the difference so I will ask the TA once I turn this assignment in. 
+
+For example you can say wss.on('connection', ....) or you can have ws.on('message'...)  
+
+But here are the examples given: 
+
+let connections = [];
+
+Okay so for this part, it seems we are using uuid.v4(). I believe that is just the version of uuid. I tested it and it looks like uuid.v1() also works okay. The alive: true is important (setting it to false made the connection not work). But we are simply appending all the uuid's onto a connections list with this first function. 
+
+    wss.on('connection', (ws) => {
+      const connection = { id: uuid.v4(), alive: true, ws: ws };
+      connections.push(connection);
+
+Now for the fun part. I believe this is executed when a message is sent over because it is .on('message'). I beleive we do c.id !== connection.id because we don't need to send it back to the sender (but I believe for my startup I will want to do this differently because I want both people to see the same messages) 
+      // Forward messages to everyone except the sender
+      ws.on('message', function message(data) {
+        connections.forEach((c) => {
+          if (c.id !== connection.id) {
+            c.ws.send(data);
+          }
+        });
+      });
+
+I think I can basically just use this same code for my startup. This is basically adjusting the connections list (message recipient list we could say) so that the server doesn't try to send out a message to someone who isn't connected. 
+
+      // Remove the closed connection so we don't try to forward anymore
+      ws.on('close', () => {
+        connections.findIndex((o, i) => {
+          if (o.id === connection.id) {
+            connections.splice(i, 1);
+            return true;
+          }
+        });
+      });
+
+AS well as the ping and pong. These are used to help check for connections and I think I can bascially use this same code for the startup: 
+
+// Respond to pong messages by marking the connection alive
+      ws.on('pong', () => {
+        connection.alive = true;
+      });
+    });
+
+    // Keep active connections alive
+    setInterval(() => {
+      connections.forEach((c) => {
+        // Kill any connection that didn't respond to the ping last time
+        if (!c.alive) {
+          c.ws.terminate();
+        } else {
+          c.alive = false;
+          c.ws.ping();
+        }
+      });
+    }, 10000);
+  }
+}
+
+It's important to remember to module.export the class.
+
+This is how we would import the class we just made previously called PeerProxy: 
+
+const { PeerProxy } = require('./peerProxy.js');
+
+And in the index.js file we can create an instance of the class and passing in an HttpService. You will get to see the "listening on port 3000' on the console once you run it with the visual studio debugger. 
+
+const httpService = app.listen(port, () => {
+  console.log(`Listening on port ${port}`);
+});
+
+new PeerProxy(httpService);
+
+I"m just going to break down the websocket code for play.js to help me understand it: 
+
+First things, we are giving a check to make sure that there is an http or ws connection? I think that's what the first line is doing. 
+
+Creating a new websocket is a built in class of the websocket package. 
+
+Here we are using the event listeners .onclose, .onopen, and .onmessage. 
+
+It's calling this.displayMSG, for my startup I will have a function that displays the chat communication that will be different. 
+
+One thing to note is how JSON is used to parse and stringify the data. This will be very imporant for when I need to dispaly the messages for my start up. 
+configureWebSocket() {
+    const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+    this.socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
+    this.socket.onopen = (event) => {
+      this.displayMsg('system', 'game', 'connected');
+    };
+    this.socket.onclose = (event) => {
+      this.displayMsg('system', 'game', 'disconnected');
+    };
+    this.socket.onmessage = async (event) => {
+      const msg = JSON.parse(await event.data.text());
+      if (msg.type === GameEndEvent) {
+        this.displayMsg('player', msg.from, `scored ${msg.value.score}`);
+      } else if (msg.type === GameStartEvent) {
+        this.displayMsg('player', msg.from, `started a new game`);
+      }
+    };
+  }
+  
+ Here is another important funciton. This one is also a local function made, but I will need to make a similar one. This is how a socket can send an event, and then the configureWebSocket function will receive it. But it might go through the server first? I need to ask the TA to clarify this. Depending on the data received (the game type, which was specified when this broadcastEvent function is called) the configurewebsocket will do different things. 
+ 
+
+  broadcastEvent(from, type, value) {
+    const event = {
+      from: from,
+      type: type,
+      value: value,
+    };
+    this.socket.send(JSON.stringify(event));
+  }
+}
+
+So its this socket.send function that is the bridge/sender to the configurewebsocket function and the rest of the local data. 
+
 simon-login notes: 
 
 This is probably the coolest part. I've been able to learn so much from the lecture with cookies and tokens! 
