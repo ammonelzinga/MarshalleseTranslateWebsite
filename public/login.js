@@ -1,12 +1,5 @@
-function login() {
-    const user_name = document.getElementById('userName');
-    localStorage.setItem("userName", user_name.value);
-    localStorage.setItem("score", 0); 
-    // document.getElementById('Thanks_number').value = "0"; 
-    window.location.href = "learn.html"; 
-    // x = document.getElementById('player-name'); 
-    // x.innerHTML = user_name.value; 
-}
+
+
 
 
 

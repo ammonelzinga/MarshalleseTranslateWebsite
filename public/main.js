@@ -180,3 +180,22 @@ function marshallese_translate(){
     displayoutput('output', real_partial_phrase); 
       return real_partial_phrase;} 
             }
+
+
+function show_conversation () {
+  let conversation = document.getElementById('conversation_page'); 
+  if (conversation.style.display === "none"){
+    conversation.style.display = "block"; 
+    let x = document.getElementById('translate_boxes'); 
+    // main.style.align = "center";
+    // main.style.justifyContent ="space-around"; 
+    // x.style.paddingRight="40%"; 
+  }
+  else{
+    conversation.style.display = 'none';
+    let x = document.getElementById('translate_boxes'); 
+    // main.style.align = "center";
+    // main.style.justifyContent ="space-around"; 
+    x.style.paddingLeft="30%"; 
+          }
+}

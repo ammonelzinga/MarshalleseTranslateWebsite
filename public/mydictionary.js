@@ -85,7 +85,22 @@ const my_dictionary_phrase =  {'howareyou' : "ej et am mour",
  'howis': 'ej et', 
  'whyis': 'ejaam', 
  'whyarethey': 'rejaam', 
-
+ 'yourmom' : 'jinom', 
+ 'mymom' : 'jino', 
+ 'theirmom': 'jinoer', 
+ 'hismom' : 'jinen', 
+ 'hermom' :'jinen', 
+ 'itsmom':'jinen', 
+ 'mydad' :'jemad', 
+ 'yourdad': 'jemad', 
+ 'theirdad':'jemaer', 
+ 'hisdad': 'jeman', 
+ 'herdad': 'jeman', 
+ 'whereis': 'ewi', 
+ 'whereare': 'ewi', 
+ 'whoareyou': 'won kwe', 
+ 'howtallareyou': 'ewi jonan am aetok'
+ 
 
 }; 
 

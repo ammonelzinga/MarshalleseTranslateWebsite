@@ -37,28 +37,64 @@
           </nav>
           <br></br>
         </header>
-    <article  class="container-fluid bg-light text-center">
+    <article  class="container-fluid text-center">
         <section>
           <br><br></br>
           <div>
           <p> Welcome to MarshalleseTranslate! </p><p>Type an English word or phrase, and we'll do our best to translate it into Marshallese. Please visit <a href="https://marshallese.org/dictionary/">Marshallese.org</a>, or <a href="https://www.trussel2.com/MOD/MED2I.htm">Marshallese-English Dictionary</a>, for a more complete Marshallese dictionary.</p>
           </div> </section> </article>
     
-    <main class="container-fluid bg-light text-center">
-      <section> 
-          <label for="textarea">English: </label>
-          <br>
-      </br>
-        <textarea id="textarea" name="varTextarea" placeholder="Type Here..." ></textarea> 
-        </section><section> 
+    <main class="container-fluid text-center" id="main_id">
+      <section id="friends_list" >
+          <table id="friends_list_id" > 
+            <tr> 
+             <th> <button class="chat_toggle" id="chat_toggle_id" value="Chat" style="background-color: lightskyblue;" onclick="show_conversation()">Chat</button> </th>
+            </tr>
+            <tr class="friends_list_chat">
+            <td> <br> </td> </tr>
+             <tr> <td> Bill </td></tr>
+             <tr>  <td>Jack</td> </tr>
+             <tr> <td>tommy</td> </tr>
+              </table>
+      </section>
+      <div> 
+      <section id="conversation_page" style="display:none"> 
+        <div id="chat-text"></div>
+        
+        <!-- <div class="name">
+          <fieldset id="name-controls">
+            <legend>My Name</legend>
+            <input id="my-name" type="text" />
+          </fieldset>
+        </div>
+     -->
+        <!-- <fieldset id="chat-controls" disabled> -->
+          <!-- <legend>Chat</legend> -->
+          <!-- <input id="new-msg" type="text" /> -->
+          <!-- <button onclick="sendMessage()">Send</button> -->
+        <!-- </fieldset> -->
+        <!-- <div id="chat-text"></div> -->
+          <fieldset id="chat-controls" > 
+
+        <input class="type_conversation" id="new-msg" type="text"> 
+        </section>
+      </div>
+
+
+      <div id="translate_divison"> 
+      <section class ="english_box"> 
+          <label for="textarea">.</label>
+        <textarea id="textarea" name="varTextarea"  placeholder="Type Here..." ></textarea> 
+        </section><section class="translate_button"> 
         <input type = "button" value = "Translate"   class="btn btn-primary bg-secondary" onclick = "marshallese_translate()" /> 
        
         </section>
-        <section>
-        <label for="textarea">Marshallese: </label>
-        <br></br>
+        <section class="marshallese_box">
+        <label for="textarea">.</label>
           <textarea id="output" name="varTextarea" onkeydown="return false"> </textarea>
-          </section>
+        </section>
+        </section>
+        </div>
       <!-- <section> -->
       <!-- <div class="input-group"> -->
             <!-- <div class="input-group input-group-lg"> -->
@@ -75,4 +111,5 @@
       <!-- </section> -->
     </main>
 </body>
+<script src="chatClient.js"></script>
 </html>
