@@ -1,6 +1,391 @@
 # first_repo
 my first repo 
 
+simon websocket note: 
+
+Always remember to npm install, you may need to npm install ws. also npm init -y
+
+The websocket still uses HTTP but it is an 'upgrade'. You need to use a wss.handleUpgrade to get a socket to upgrade to websocket so that you can have communication back and forth between the server and the client. In this way they become peers. 
+
+So we need to add code for the server end of things and the client end of things. 
+
+We need to import ws first: const { WebSocketServer } = require('ws'); 
+
+When making an instance of of WebSocketServer you have the option to set 'noServer' to true. This will require you to manually include upgrade code but allows you to use your own server? I believe: 
+
+ex: 
+const wss = new WebSocketServer({ noServer: true });
+
+We also need to manually upgrade the connection to be Websocket: 
+
+// Handle the protocol upgrade from HTTP to WebSocket
+    httpServer.on('upgrade', (request, socket, head) => {
+      wss.handleUpgrade(request, socket, head, function done(ws) {
+        wss.emit('connection', ws, request);
+      });
+    });
+    
+you can use ws.on as an event listener. you can use ws.onmessage or .onclose or .onopen, etc. You can also do ws.on('message'...) I'm actually not sure what the difference so I will ask the TA once I turn this assignment in. 
+
+For example you can say wss.on('connection', ....) or you can have ws.on('message'...)  
+
+But here are the examples given: 
+
+let connections = [];
+
+Okay so for this part, it seems we are using uuid.v4(). I believe that is just the version of uuid. I tested it and it looks like uuid.v1() also works okay. The alive: true is important (setting it to false made the connection not work). But we are simply appending all the uuid's onto a connections list with this first function. 
+
+    wss.on('connection', (ws) => {
+      const connection = { id: uuid.v4(), alive: true, ws: ws };
+      connections.push(connection);
+
+Now for the fun part. I believe this is executed when a message is sent over because it is .on('message'). I beleive we do c.id !== connection.id because we don't need to send it back to the sender (but I believe for my startup I will want to do this differently because I want both people to see the same messages) 
+      // Forward messages to everyone except the sender
+      ws.on('message', function message(data) {
+        connections.forEach((c) => {
+          if (c.id !== connection.id) {
+            c.ws.send(data);
+          }
+        });
+      });
+
+I think I can basically just use this same code for my startup. This is basically adjusting the connections list (message recipient list we could say) so that the server doesn't try to send out a message to someone who isn't connected. 
+
+      // Remove the closed connection so we don't try to forward anymore
+      ws.on('close', () => {
+        connections.findIndex((o, i) => {
+          if (o.id === connection.id) {
+            connections.splice(i, 1);
+            return true;
+          }
+        });
+      });
+
+AS well as the ping and pong. These are used to help check for connections and I think I can bascially use this same code for the startup: 
+
+// Respond to pong messages by marking the connection alive
+      ws.on('pong', () => {
+        connection.alive = true;
+      });
+    });
+
+    // Keep active connections alive
+    setInterval(() => {
+      connections.forEach((c) => {
+        // Kill any connection that didn't respond to the ping last time
+        if (!c.alive) {
+          c.ws.terminate();
+        } else {
+          c.alive = false;
+          c.ws.ping();
+        }
+      });
+    }, 10000);
+  }
+}
+
+It's important to remember to module.export the class.
+
+This is how we would import the class we just made previously called PeerProxy: 
+
+const { PeerProxy } = require('./peerProxy.js');
+
+And in the index.js file we can create an instance of the class and passing in an HttpService. You will get to see the "listening on port 3000' on the console once you run it with the visual studio debugger. 
+
+const httpService = app.listen(port, () => {
+  console.log(`Listening on port ${port}`);
+});
+
+new PeerProxy(httpService);
+
+I"m just going to break down the websocket code for play.js to help me understand it: 
+
+First things, we are giving a check to make sure that there is an http or ws connection? I think that's what the first line is doing. 
+
+Creating a new websocket is a built in class of the websocket package. 
+
+Here we are using the event listeners .onclose, .onopen, and .onmessage. 
+
+It's calling this.displayMSG, for my startup I will have a function that displays the chat communication that will be different. 
+
+One thing to note is how JSON is used to parse and stringify the data. This will be very imporant for when I need to dispaly the messages for my start up. 
+configureWebSocket() {
+    const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+    this.socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
+    this.socket.onopen = (event) => {
+      this.displayMsg('system', 'game', 'connected');
+    };
+    this.socket.onclose = (event) => {
+      this.displayMsg('system', 'game', 'disconnected');
+    };
+    this.socket.onmessage = async (event) => {
+      const msg = JSON.parse(await event.data.text());
+      if (msg.type === GameEndEvent) {
+        this.displayMsg('player', msg.from, `scored ${msg.value.score}`);
+      } else if (msg.type === GameStartEvent) {
+        this.displayMsg('player', msg.from, `started a new game`);
+      }
+    };
+  }
+  
+ Here is another important funciton. This one is also a local function made, but I will need to make a similar one. This is how a socket can send an event, and then the configureWebSocket function will receive it. But it might go through the server first? I need to ask the TA to clarify this. Depending on the data received (the game type, which was specified when this broadcastEvent function is called) the configurewebsocket will do different things. 
+ 
+
+  broadcastEvent(from, type, value) {
+    const event = {
+      from: from,
+      type: type,
+      value: value,
+    };
+    this.socket.send(JSON.stringify(event));
+  }
+}
+
+So its this socket.send function that is the bridge/sender to the configurewebsocket function and the rest of the local data. 
+
+simon-login notes: 
+
+This is probably the coolest part. I've been able to learn so much from the lecture with cookies and tokens! 
+
+I will need to edit my html functions and css to include an interface for usernames and password. 
+
+Will need to create another variable from the instance client from the MongoClient class for the user. 
+
+A couple simple functions to get the email and token: 
+
+function getUser(email) {
+return userCollection.findOne({email: email)}; 
+}
+the findone function can take the 'email' typed out and find it from the database. 
+
+We will need to have a createUser function that includes awaits, a bcrypt.hash (remember to download the bcrypt package). 
+
+Just remember that insertOne can also automatically add new information. this is why we use it in the craetUser function. 
+
+for index.js notes: 
+This is where the cookie fun comes into play. 
+
+The apirouter.post will be used to check for when someone is creating a new account. It needs to first check if there is an existing user. it uses res.status(409), which simply represents "conflict." Then simply call our database function by saying DB.createuser(req.body.email, req.body.password); 
+
+We also need to now call setAuthoCookie(res, user.token); 
+And then res.send({
+id: user._id, 
+}); 
+
+Now for checking if a login attempt matches their username and password. We get to use the super fancy bcrypt package to do this since the passwords are encrypted. 
+
+This is super important and I want to copy and paste it here, basically if the password matches up, then we can call the setAuthCookies function. 
+
+This keeps the cookie safe and secure. 
+
+apiRouter.post('/auth/login', async (req, res) => {
+  const user = await DB.getUser(req.body.email);
+  if (user) {
+    if (await bcrypt.compare(req.body.password, user.password)) {
+      setAuthCookie(res, user.token);
+      res.send({ id: user._id });
+      return;
+    }
+  }
+  res.status(401).send({ msg: 'Unauthorized' });
+});
+
+Here's another function that I think I will need for my startup. I'm still trying to learn it so I want to paste it here as well. I do know that this makes the program more safe. 
+
+// secureApiRouter verifies credentials for endpoints
+var secureApiRouter = express.Router();
+apiRouter.use(secureApiRouter);
+
+secureApiRouter.use(async (req, res, next) => {
+  authToken = req.cookies[authCookieName];
+  const user = await DB.getUserByToken(authToken);
+  if (user) {
+    next();
+  } else {
+    res.status(401).send({ msg: 'Unauthorized' });
+  }
+});
+
+All of this code comes into play when we use them in login.js 
+
+An important one: 
+
+if (response?.status === 200) {
+    localStorage.setItem('userName', userName);
+    window.location.href = 'play.html';
+  } else {
+    const modalEl = document.querySelector('#msgModal');
+    modalEl.querySelector('.modal-body').textContent = `⚠ Error: ${body.msg}`;
+    const msgModal = new bootstrap.Modal(modalEl, {});
+    msgModal.show();
+  }
+}
+
+This will check to make sure that the cookies are all good and set and authorized (response?.status ===200). I love how we can't even look at the cookie, but we don't need to because the browser knows its good and send the 200. 
+
+We create a logOrCreate function that will basically take the input from the username and password boxes. If they are good, then it'll go to play.html and the user will be logged in!
+
+Remeber that we can take a look at atlas to see the usernames that have been added. This will help me as I create the startup so I can see how the data is stored. The third party resources and code packages really smooth the encrypting, data storing, and data transferring to be quite smooth. 
+
+Simon DB notes:
+
+Atlas login email is ammonelzinga@gmail.com
+you can go to connect to get the hostname (it ends in .net). 
+
+To update your user, password, and hostname credentials on the production environment you can use this code in the terminal or git bash: 
+
+ssh -i ~/keys/production.pem ubuntu@myfunkychickens.click
+
+sudo vi /etc/environment
+
+export MONGOUSER=<yourmongodbusername>
+export MONGOPASSWORD=<yourmongodbpassword>
+export MONGOHOSTNAME=<yourmongodbhostname>
+      
+Remember the :w or :wq and the ZZ helps you get out of editing it. press i to insert. 
+     
+Okay to connect to the database we need to first make some functions in a file we can call database.js. We will call these functions in the index.js file which used express to globally store the scores. 
+      
+ The first thing you want to do is a safety feature so that only you who has the right credentials can make changes. It goes as follows: 
+      
+const {MongoClient} = require('mongodb');
+
+const userName = process.env.MONGOUSER;
+const password = process.env.MONGOPASSWORD;
+const hostname = process.env.MONGOHOSTNAME;
+
+if (!userName) {
+  throw Error('Database not configured. Set environment variables');
+}
+
+Next we can copy down the connection url from our atlas website. Remember to have the local IP address accessible. 
+      
+const url = `......'; 
+      
+We can now make an instance of the class MongoClient form that url variable. 
+      
+const client = new MongoClient(url); 
+
+In addition we need to help the mongo db know where in our database we want to store the following information. We want it to be a in a database called 'simon.' so to do that we can use client.db('simon'). Further more we want to make a collection. A collection is similar to a list of tables to store information. So we can input our scores data in a collection. 
+      
+we do: 
+      
+const scoreCollection = client.db('simon').collection('score'); 
+
+Now we can make some functions. Some functions to remember are insertone and toArray and find.  
+      
+insertone will allow us to update a document/table into our collections of 'score'. 
+toArray helps the rest of our code process the data from the collection to display it because it's in array format. 
+      
+Also good to remember is the syntax for >. We do $gt: for >. (a quick google search will bring examples of further syntax). 
+      
+There are properties as well in mongo. We use 1) sort and 2) limit in this simon example. These help us when we use the find function because we can pass these properties in to help us filter what data we want to be in our array. 
+      
+At the end we need to use module.exports(pass in our functions) so that node.js knows which functions to be able to pull out from this file.  
+ 
+      
+      
+      
+Service notes: 
+
+      The service code allows us to use express package and node.js which help us be able to store data into a server. This allows the scores to be seen by everybody and not just locally. I'm really excited to implement this in my start up project. 
+      
+      I really liked the steps given in the assignment so I wanted to list them here: 
+     1)  Move all the previous deliverable code files (_.html, _.js, *.css, favicon.ico, and asserts) into a sub-directory named public. We will use the HTTP Node.js based service to host the front-end application files. This is done with the static file middleware that we will add our service index.js. 
+      
+      2) Within the project directory run npm init -y. This configures the directory to work with node.js.
+
+      3) Modify or create .gitignore to ignore node_modules.
+            in the .gitignore file you can literally just type node.modules/ 
+      
+      4)Install the Express package by running npm install express. This will write the Express package dependency in the package.json file and install all the Express code to the node_modules directory.
+      
+      This is nice because it does a lot of the hard work for you. I believe this is how the package.json and package-lock.json is generated. 
+      
+      5) Create a file named index.js in the root of the project. This is the entry point that node.js will call when you run your web service.
+           I think my start up already has an index.js so I"ll need to remember to change that file name before I complete this first step in my start up. 
+           
+      6) Add the basic Express JavaScript code needed to host the application static content and the desired endpoints.
+      
+            Some of the generic code that I think will be applicable to my start up project is this: 
+            
+            const express = require('express');   (using express package) 
+            const app = express();
+
+            // The service port. In production the front-end code is statically hosted by the service on the same port.
+            const port = process.argv.length > 2 ? process.argv[2] : 3000; (So this is checking to make sure the argv has a 2 index. I need to ask if the 2 index is code content in the whole folder? Or if it is directed to index.js or port 3000 or how that works. 
+
+            // JSON body parsing using built-in middleware
+            app.use(express.json());
+
+            // Serve up the front-end static content hosting
+            app.use(express.static('public'));  (The public folder contains all of our html and css and js code that we've done before, so I think the app.use is sort of like saying we want to have the folder 'public' in our app.) 
+
+            // Router for service endpoints
+            const apiRouter = express.Router(); 
+            
+            (I think this helps us access the server and the data stored there later on. I believe the '/api' will generally be             app.use(`/api`, apiRouter);            what you pass into app.use('/api', apiRouter)). 
+            
+            I'll have to edit my scores function just as we did with the simon. 
+            
+            // GetScores
+            apiRouter.get('/scores', (_req, res) => {    
+              res.send(scores); 
+                  });  
+            
+            (So to access the scores already in saved we need to use apiRouter.get('/scores, (_req, res). I believe the req stands for request and the res stands for response. So when we type res.send(scores). I think the res is sort of like the return statement. So it's almost like saying return scores.)
+            
+                         
+
+            // SubmitScore
+            apiRouter.post('/score', (req, res) => { 
+            scores = updateScores(req.body, scores); 
+            res.send(scores);
+             });
+             
+            (Here we can use apiRouter.post which will basically update the score. The updateScores function will give us the updated scores, and in later code this is called to display it on html. But I think the  res.send(scores) is sending it back to the server or port so that it is also updated globally) 
+                        
+          
+            // Return the application's default page if the path is unknown  
+            app.use((_req, res) => { 
+             res.sendFile('index.html', { root: 'public' });
+              });
+            
+            (This is super important because it basically gives the default page, for my startup I'd want that to be index.html as well.) 
+           
+                                  
+            app.listen(port, () => {
+            console.log(`Listening on port ${port}`);   
+             });
+            (Is this necessary? I need to ask the TA if we have to have the listening function)
+                                        
+      
+      7) Modify the Simon application code to make service endpoint requests to our newly created HTTP service code.
+            This is found in the scroes.js file. I'll write down what the new changes looks like: 
+            async function loadScores() {
+  const response = await fetch("/api/scores")
+  const scores = await response.json()
+
+  // Modify the DOM to display the scores
+  
+          So I believe the api is the place where everything is stored on the server. I need to learn more if this server is from Amazon Web Servies itself? The port 3000? Remember to ask the TA about that for clarification. 
+          
+          
+     
+Javascript notes:
+
+You can only use onload element listener with certain elements of html with javascript. You can change the default bootstrap colors using $warning = 'orange', etc before inserting the bootstrap link (still need to attempt that successfully) 
+
+You can use the value of an element as a toggle. 
+
+You should only have one id per element, but you can access multiple elements at once using things getelementsbyclass feature. 
+
+if the javascript file isn't working or has a syntax error the elements in relation to that javascript page won't show even if they are for different functions. 
+
+You can use getelementbyid for quick changes to the values of elements. When I say value in this sense, I am meaning the innerHTML or innerTEXT. 
+
+
+
 another change
 
 This is super cool! I learned a lot! This is the first time I have pushed and pulled from my very own repository on github! I like how you can commit changes and push them and even request to push them on other peoples repos as well! 
