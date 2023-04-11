@@ -1,8 +1,89 @@
+(async () => {
+    let authenticated = false;
+    const userName = localStorage.getItem('userName');
+    if (userName) {
+      const nameEl = document.querySelector('#userName');
+      nameEl.value = userName;
+      const user = await getUser(nameEl.value);
+      authenticated = user?.authenticated;
+    }
+    if (authenticated) {
+      document.querySelector('#playerName').textContent = userName;
+      setDisplay('loginControls', 'none');
+      setDisplay('playControls', 'block');
+    } else {
+      setDisplay('loginControls', 'block');
+      setDisplay('playControls', 'none');
+    }
+  })();
 
 
+async function login() {
+    loginOrCreate(`/api/auth/login`); 
+}
 
+async function createUser() {
+    loginOrCreate(`/api/auth/create`); 
+}
 
+async function loginOrCreate(endpoint){
+    const userName = document.querySelector('#userName')?.value; 
+    const password = document.querySelector('#userPassword')?.value; 
+    const response = await fetch(endpoint, {
+        method: 'post', 
+        body: JSON.stringify({email: userName, password: password}), 
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+        
+        },
+    });
+    // const body = await response.json(); 
+    console.log(await response.json() ); 
 
+    if (response?.status === 200){
+        localStorage.setItem('userName', userName);
+        // console.log(body); 
+        window.location.href = 'main.html'; 
+    } else {
+        const wrong = document.querySelector('#userName'); 
+        wrong.value = "Nope, try again :)"; 
+        // const wwrong = document.querySelector('#userPassword'); 
+        // wwrong.value = "Forgot? Click New User"; 
+    }
+}
+
+// async function getdata(endpoint {
+//     const response = await fetch(endpoint, {
+//         method: 'get', 
+//         body: JSON.stringif
+//     })
+// })
+
+function play() {
+    window.location.href = 'main.html'; 
+}
+
+function logout() {
+    fetch(`/api/auth/logout`, {
+        method: 'delete', 
+    }).then(() => (window.location.href = '/')); 
+}
+
+async function getUser(email){
+    const response = await fetch(`/api/user/${email}`); 
+    if (response.status === 200){
+        return response.json(); 
+    }
+
+    return null; 
+}
+
+function setDisplay(controlId, display) {
+    const ment = document.querySelector(`#${controlId}`);
+    if(ment) {
+        ment.style.display = display; 
+    }
+}
 
 
 

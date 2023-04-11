@@ -67,17 +67,17 @@ input.addEventListener('keydown', (e) => {
   }
 });
 
-async function login() {
-  const user_name = document.getElementById('userName');
-  localStorage.setItem("userName", user_name.value);
-  localStorage.setItem("score", 0); 
-  let user = localStorage.getItem("userName"); 
-  // document.getElementById('Thanks_number').value = "0"; 
-  window.location.href = "index.html"; 
+// async function login() {
+//   const user_name = document.getElementById('userName');
+//   localStorage.setItem("userName", user_name.value);
+//   localStorage.setItem("score", 0); 
+//   let user = localStorage.getItem("userName"); 
+//   // document.getElementById('Thanks_number').value = "0"; 
+//   window.location.href = "index.html"; 
   
   // x = document.getElementById('player-name'); 
   // x.innerHTML = user_name.value; 
-}
+// }
  
 // Disable chat if no name provided
 // const chatControls = document.querySelector('#chat-controls');

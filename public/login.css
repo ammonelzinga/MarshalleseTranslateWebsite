@@ -20,6 +20,8 @@ main {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    background-size:60%; 
+    background-color:rgb(244, 244, 244)
 
 }
 menu{
@@ -41,6 +43,12 @@ menu .nav-item{
     /* margi: 50px; */
     padding-right: 50px;
 
+}
+
+#playername{
+    background-color:rgb(244, 244, 244);
+    border-color:rgb(244, 244, 244);
+    padding: 15px; 
 }
 
 /* div.onetothree{

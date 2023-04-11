@@ -1,61 +1,80 @@
-const {MongoClient} = require('mongodb'); 
-const bcrypt = require('bcrypt'); 
-const uuid = require('uuid'); 
 
-const userName = process.env.MONGOUSER; 
-const password = process.env.MONGOPASSWORD; 
-const hostnmae = process.env.MONGOHOSTNAME; 
+const { MongoClient } = require('mongodb');
+const bcrypt = require('bcrypt');
+const uuid = require('uuid');
+
+const userName = process.env.MONGOUSER;
+const password = process.env.MONGOPASSWORD;
+const hostname = process.env.MONGOHOSTNAME;
 
 if (!userName) {
-    throw Error('Database not configured. Set environment variables'); 
+  throw Error('Database not configured. Set environment variables');
 }
 
 const url = `mongodb+srv://zingaboy:elzinga11@cluster0.syujyru.mongodb.net`;
 
-const client = new MongoClient(url); 
-const usercollection = client.db('startup').collection('user'); 
-const scoreCollection = client.db('startup').collection('score'); 
+const client = new MongoClient(url);
+const userCollection = client.db('startup').collection('user');
+const scoreCollection = client.db('startup').collection('score');
 
 function getUser(email) {
-    return usercollection.findOne({email:email}); 
+  return userCollection.findOne({ email: email });
 }
 
 function getUserByToken(token) {
-    return usercollection.findOne({token: token }); 
+  return userCollection.findOne({ token: token });
 }
 
 async function createUser(email, password) {
-//    hash the password before we insert it into the database
-    const passwordHash = await bcrypt.hash(password, 10); 
+  // Hash the password before we insert it into the database
+  const passwordHash = await bcrypt.hash(password, 10);
 
-    const user = {
-        email: email,  
-        password: passwordHash, 
-        token: uuid.v4(), 
-    }; 
-    await usercollection.insertOne(user); 
+  const user = {
+    email: email,
+    password: passwordHash,
+    token: uuid.v4(),
+    score: 0, 
+    first: 0, 
+    second: 0, 
+    third: 0, 
+    fourth: 0, 
+    fifth: 0, 
+    sixth: 0
+  };
+  await userCollection.insertOne(user);
+  return user;
+}
 
-    return user; 
+async function update_user_data(user, scoree, first, second, third, fourth, fifth, sixth){
+  const filter = {email: user}; 
+  const update = {$set: {score: scoree, first: first, second: second, third: third, fourth: fourth, fifth: fifth, sixth: sixth}};
+  // const update = {$set: {email: email, score: score, first: first, second: second, third: third, fourth: fourth, fifth: fifth, sixth: sixth}};
+  const options = {upsert: true}; 
+  await userCollection.updateOne(filter, update, options); 
+  return user; 
 }
 
 function addScore(score) {
-    scoreCollection.insertOne(score); 
+  scoreCollection.insertOne(score);
 }
 
 function getHighScores() {
-    const query = {}; 
-    const options = {
-        sort: { score: -1 }, 
-        limit: 10,
-    }; 
-    const cursor = scoreCollection.find(query, options); 
-    return cursor.toArray(); 
+  const query = {};
+  const options = {
+    sort: { score: -1 },
+    limit: 10,
+  };
+  const cursor = scoreCollection.find(query, options);
+  // const cursor = scoreCollection; 
+  return cursor.toArray();
+  // return scoreCollection; 
 }
 
 module.exports = {
-    getUser,
-    getUserByToken, 
-    createUser, 
-    addScore, 
-    getHighScores,
-}; 
+  getUser,
+  getUserByToken,
+  createUser,
+  addScore,
+  getHighScores,
+  update_user_data
+};
