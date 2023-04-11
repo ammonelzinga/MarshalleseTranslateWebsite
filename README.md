@@ -1,6 +1,110 @@
 # first_repo
 my first repo 
 
+simon react notes: 
+
+1) The entire application with react can be on the same webpage. Instead of an html page for each functional peice, we have a React componenet. App.jsx is the parent of all components. It's interesing that even with this, on the website it'll have /play or /about at the end of the url. You can type in html in jsx. and class has to become className
+
+2) React function useEffect runs when the name changes. calls out to simon getUser a sets a state variable based on the result. Then either shows or hides the content. a state variable is a very common react feature to toggle between two different modes. 
+
+to use a state variable: const [variable, toggle_variable] = React.useState(localStorage.getItem('userName') || ''); 
+
+I believe it is assigning userName to variable. toggle_variable is basically used to change the variable. ex: toggle_variable(variable = variable + 1); 
+
+3) Remember to have your function names be called 'export function ....()' 
+
+4) install these npm packages: 
+        npm install react-router-dom
+        npm install bootstrap react-bootstrap 
+        
+        and import accordingly: 
+        import 'bootstrap/dist/css/bootstrap.min.css';
+
+5) Here's what you need to do to be able to switch "pages" to show the play.jsx, scores.jsc, etc: 
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
+);
+
+And also use this: 
+
+  {authState === AuthState.Authenticated && (
+      <li className='nav-item'>
+        <NavLink className='nav-link' to='play'>
+          Play
+        </NavLink>
+      </li>
+    )}
+    
+ And then also: 
+ 
+ <Routes>
+  <Route path='/' element={<Login />} exact />
+  <Route path='/play' element={<Play />} />
+  <Route path='/scores' element={<Scores />} />
+  <Route path='/about' element={<About />} />
+  <Route path='*' element={<NotFound />} />
+</Routes>
+
+ That was found in app.jsx the overarching .jsx parent file. This helps the program to know where to take the user after clicking on each tab.
+ 
+Note that the authState === AuthState.Authenticated is making sure that the state is in authenticated before displaying the information ( I believe so) . 
+
+
+Please note that <App /> is required. 
+
+6) It appears that the database.js code seems consistent as before. 
+
+7) Each file in src (this used to be our public folder) will have another folder for each viewpage. Play, scores, login, etc. 
+
+Within each of those,  you can have .css, .js, and .jsx files. I'm not sure yet if it's required but it appears (at least for the login folder) that there is a separate .jsx for each state of the webpage (depending if the user was logged in or not). 
+
+Each of these different files can look very confusing at the start, but it almost appears as if the .js file is sort of like a header file, and the .jsx file is the one that implements the code for the class found in the .js file. 
+
+We see an example of this with authState.js: 
+
+export class AuthState {
+  static Unknown = new AuthState('unknown');
+  static Authenticated = new AuthState('authenticated');
+  static Unauthenticated = new AuthState('unauthenticated');
+
+  constructor(name) {
+    this.name = name;
+  }
+}
+
+8) In bootstrap with jsx, we use something called Modal. This is simply a message/image that is displayed on the screen. 
+
+9) In the app.jsx file, the function app() will check to see if the user is authenticated. What's cool is that the return value is what the webpage looks like. It has the html starting with the header and going down to the footer. It makes it tricky to see how everything is connected, so research more about react componenets.
+
+10) We have a file called gameNotifier.js. What's interesting is this piece of code: 
+
+ constructor() {
+    // When dev debugging we need to talk to the service and not the React debugger
+    let port = window.location.port;
+    if (process.env.NODE_ENV !== 'production') {
+      port = 3000;
+    }
+    
+    const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+    this.socket = new WebSocket(`${protocol}://${window.location.hostname}:${port}/ws`);
+    this.socket.onopen = (event) => {
+      this.receiveEvent(new EventMessage('Simon', GameEvent.System, { msg: 'connected' }));
+    };
+    
+ I like this file because it helps with sending messagse with the socket. It helps keep it organized. 
+ 
+ broadcastEvent(from, type, value) {
+    const event = new EventMessage(from, type, value);
+    this.socket.send(JSON.stringify(event));
+  }
+  
+  they use the socket.sent code as before. 
+  
+
 simon websocket note: 
 
 Always remember to npm install, you may need to npm install ws. also npm init -y
