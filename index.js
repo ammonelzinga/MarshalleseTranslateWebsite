@@ -104,6 +104,17 @@ apiRouter.get('/user/:email', async (req, res) => {
   res.status(404).send({ msg: 'Unknown' });
 });
 
+apiRouter.get('/userr/:email', async (req, res) => {
+  const user = await DB.getUser(req.params.email);
+  if (user) {
+    const token = req?.cookies.token;
+    // res.send(user); 
+    res.send({ email: user.email, authenticated: token === user.token });
+    return;
+  }
+
+  res.status(404).send({ msg: 'Unknown' });
+});
 
 
 
@@ -131,7 +142,7 @@ secureApiRouter.get('/scores', async (req, res) => {
 
 // SubmitScore
 secureApiRouter.post('/score', async (req, res) => {
-  await DB.addScore(req.body);
+  await DB.addScore(req.body.email, req.body.score);
   const scores = await DB.getHighScores();
   res.send(scores);
 });

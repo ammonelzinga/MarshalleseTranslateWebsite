@@ -17,7 +17,7 @@
   crossorigin="anonymous"
 />
 </head>
-<body class="bg-secondary text-dark ">
+<body class="bg-secondary text-dark " onload="load_func()">
     <header class="container-fluid bg-secondary">
       <nav class="navbar fixed-top navbar-light">
         <menu class="navbar-light justify-content-center text-light">
@@ -37,7 +37,8 @@
           </menu>
         </nav>
       </header>
-      <main class="container-fluid text-center justify-content-center" style="background-image: url('https://www.wondermondo.com/wp-content/uploads/2017/10/MajuroBeach.jpg?ezimgfmt=rs:376x238/rscb21/ngcb21/notWebP'); background-repeat: no-repeat; background-position: center;  ">
+      <main>
+      <section class="container-fluid text-center justify-content-center" style="background-image: url('https://www.wondermondo.com/wp-content/uploads/2017/10/MajuroBeach.jpg?ezimgfmt=rs:376x238/rscb21/ngcb21/notWebP'); background-repeat: no-repeat; background-position: center;  ">
         <br>
         <div> 
         <!-- <div class ='input-group-text bg-prim'> -->
@@ -63,6 +64,17 @@
               </button>
               </div>
               </div>
+
+              </section>
+             <section> 
+              <article>
+                <div id = "random_quote"> 
+                  <p id = "quote"> </p>
+                  <p id = "quote_author"> </p>
+                  </div>
+                </article>
+              </section>
+            
           
 
               <!-- Incorrect sign in -->
@@ -99,7 +111,11 @@
           </div>
         </div> --> 
     
-      </main>
+     </main>
+    
+
+  
+   
       <script src="login.js"></script>
       </body>
       </html>

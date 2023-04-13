@@ -54,8 +54,12 @@ async function update_user_data(user, scoree, first, second, third, fourth, fift
   return user; 
 }
 
-function addScore(score) {
-  scoreCollection.insertOne(score);
+async function addScore(email, score) {
+  const filter = {email: email};
+  const update = {$set: {score: score}};
+  const options = {upsert: true}; 
+  await scoreCollection.updateOne(filter, update, options);
+  return email; 
 }
 
 function getHighScores() {

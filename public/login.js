@@ -1,25 +1,34 @@
-(async () => {
-    let authenticated = false;
+async function load_func(){
+    let authenticated = false; 
+    // let auth = false; 
     const userName = localStorage.getItem('userName');
     if (userName) {
+        console.log('authenticating user'); 
       const nameEl = document.querySelector('#userName');
       nameEl.value = userName;
       const user = await getUser(nameEl.value);
       authenticated = user?.authenticated;
+    // auth = user?.token; 
     }
     if (authenticated) {
-      document.querySelector('#playerName').textContent = userName;
+        console.log('authenticated'); 
+      document.querySelector('#playerName').textContent = `Welcome ${userName}`;
       setDisplay('loginControls', 'none');
       setDisplay('playControls', 'block');
     } else {
+        console.log("non authenticated"); 
       setDisplay('loginControls', 'block');
       setDisplay('playControls', 'none');
     }
-  })();
+    callService(sharequote); 
+    console.log("callSErvice(sahrequote)");
+  }
 
 
 async function login() {
     loginOrCreate(`/api/auth/login`); 
+    // setDisplay('loginControls', 'none');
+    // setDisplay('playControls', 'block');
 }
 
 async function createUser() {
@@ -37,8 +46,8 @@ async function loginOrCreate(endpoint){
         
         },
     });
-    // const body = await response.json(); 
-    console.log(await response.json() ); 
+    const body = await response.json(); 
+    // console.log(await response.json() ); 
 
     if (response?.status === 200){
         localStorage.setItem('userName', userName);
@@ -66,11 +75,13 @@ function play() {
 function logout() {
     fetch(`/api/auth/logout`, {
         method: 'delete', 
-    }).then(() => (window.location.href = '/')); 
+    }).then(() => (window.location.href = '/'));
+//     setDisplay('loginControls', 'block');
+//     setDisplay('playControls', 'none');
 }
 
 async function getUser(email){
-    const response = await fetch(`/api/user/${email}`); 
+    const response = await fetch(`/api/userr/${email}`); 
     if (response.status === 200){
         return response.json(); 
     }
@@ -85,93 +96,27 @@ function setDisplay(controlId, display) {
     }
 }
 
+function sharequote(data){
+    console.log(data);
+    let quo = document.getElementById("quote"); 
+    let auth = document.getElementById("quote_author"); 
+    quo.innerText = data.content; 
+    auth.innerText = data.author; 
+}
+
+function callService(sharequote){
+    console.log('before fetch');
+    fetch ("https://api.quotable.io/random")
+    .then((response) => response.json())
+    .then((data) => {
+        sharequote(data); 
+    })
+    console.log('after fetch');
+}
 
 
-// saveScore(score) {
-//     const userName = this.getPlayerName();
-//     let scores = [];
-//     const scoresText = localStorage.getItem('scores');
-//     if (scoresText) {
-//       scores = JSON.parse(scoresText);
-//     }
-//     scores = this.updateScores(userName, score, scores);
-
-//     localStorage.setItem('scores', JSON.stringify(scores));
-//   }
-
-//   updateScores(userName, score, scores) {
-//     const date = new Date().toLocaleDateString();
-//     const newScore = { name: userName, score: score, date: date };
-
-//     let found = false;
-//     for (const [i, prevScore] of scores.entries()) {
-//       if (score > prevScore.score) {
-//         scores.splice(i, 0, newScore);
-//         found = true;
-//         break;
-//       }
-//     }
-
-//     if (!found) {
-//       scores.push(newScore);
-//     }
-
-//     if (scores.length > 10) {
-//       scores.length = 10;
-//     }
-
-//     return scores;
-//   }
-// }
 
 
-// getPlayerName() {
-//     return localStorage.getItem('userName') ?? 'Mystery player';
-//   }
 
-
-//   const playerNameEl = document.querySelector('.player-name');
-//   playerNameEl.textContent = this.getPlayerName();
-// }
-
-
-// score.JS
-
-
-// function loadScores() {
-//     let scores = [];
-//     const scoresText = localStorage.getItem('scores');
-//     if (scoresText) {
-//       scores = JSON.parse(scoresText);
-//     }
-  
-//     const tableBodyEl = document.querySelector('#scores');
-  
-//     if (scores.length) {
-//       for (const [i, score] of scores.entries()) {
-//         const positionTdEl = document.createElement('td');
-//         const nameTdEl = document.createElement('td');
-//         const scoreTdEl = document.createElement('td');
-//         const dateTdEl = document.createElement('td');
-  
-//         positionTdEl.textContent = i + 1;
-//         nameTdEl.textContent = score.name;
-//         scoreTdEl.textContent = score.score;
-//         dateTdEl.textContent = score.date;
-  
-//         const rowEl = document.createElement('tr');
-//         rowEl.appendChild(positionTdEl);
-//         rowEl.appendChild(nameTdEl);
-//         rowEl.appendChild(scoreTdEl);
-//         rowEl.appendChild(dateTdEl);
-  
-//         tableBodyEl.appendChild(rowEl);
-//       }
-//     } else {
-//       tableBodyEl.innerHTML = '<tr><td colSpan=4>Be the first to score</td></tr>';
-//     }
-//   }
-  
-//   loadScores();
 
   

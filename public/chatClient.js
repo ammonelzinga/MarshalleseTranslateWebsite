@@ -12,7 +12,7 @@ socket.onmessage = async (event) => {
   const text = await event.data.text();
   const chat = JSON.parse(text);
   appendMsg('friend', chat.name, chat.msg);
-  appendfriend(chat.contact_class, chat.contact); 
+  // appendfriend(chat.contact_class, chat.contact); 
 };
 
 // If the webSocket is closed then disable the interface
@@ -33,16 +33,16 @@ function sendMessage() {
     
     socket.send(`{"name":"${usernaame}", "msg":"${msg}"}`);
     msgEl.value = '';
-    appendfriend('me', usernaame); 
+    // appendfriend('me', usernaame); 
   }
 }
 
 // Show world we're connected
-function show_connected(user){
-  let username_class = user+"class"; 
-    appendfriend('me', user); 
+// function show_connected(user){
+  // let username_class = user+"class"; 
+    // appendfriend('me', user); 
     // socket.send(`{"contact_class":"${username_class}", "contact":"${username}"}`); 
-}
+// }
 
 // Create one long list of messages
 function appendMsg(cls, from, msg) {
@@ -52,12 +52,12 @@ function appendMsg(cls, from, msg) {
     ;
 }
 // create list of friends
-function appendfriend(cls, from){
-  let friend_list = document.querySelector('#friends_list');
-  friend_list.innerHTML = friend_list.innerHTML + 
-  // '<tr><td><button class="${cls}">${from}</button></td> </tr>'
-  `<tr><td><button class="${cls}">${from}</button></td></tr>`;
-}
+// function appendfriend(cls, from){
+//   let friend_list = document.querySelector('#friends_list');
+//   friend_list.innerHTML = friend_list.innerHTML + 
+//   // '<tr><td><button class="${cls}">${from}</button></td> </tr>'
+//   `<tr><td><button class="${cls}">${from}</button></td></tr>`;
+// }
 
 // Send message on enter keystroke
 const input = document.querySelector('#new-msg');

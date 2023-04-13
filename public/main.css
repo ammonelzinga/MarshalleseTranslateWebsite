@@ -27,7 +27,12 @@ main {
 
 }
 
-
+#new-msg{
+    position: absolute; 
+    bottom: 0; 
+    left: 0; 
+    text-align: top;  
+}
 main div:nth-child(2) section:nth-child(1)  label{
     /* background-color:lightsalmon; */
     /* background-clip: border-box;  */
@@ -57,12 +62,15 @@ main div:nth-child(1){
 } */
 #chat-text{
     flex-direction: reverse; 
-    background-color: rgb(180, 225, 252);
+    /* background-color: rgb(180, 225, 252); */
+    /* height: 10vh;  */
+    position: relative; 
+    /* width: 300px;  */
 }
 
-main div:nth-child(2){
-    background-color: rgb(180, 225, 252);
-}
+/* main div:nth-child(2){ */
+    /* background-color: rgb(180, 225, 252); */
+/* } */
 main div:nth-child(2) section:nth-child(1){
     flex: 3; 
     flex-direction: row;
@@ -72,8 +80,8 @@ main div:nth-child(2) section:nth-child(1){
 
 main div:nth-child(1) section:nth-child(2) {
     flex: 4; 
-    flex-direction: row;
-    background-color: rgb(180, 225, 252);
+    /* flex-direction: row; */
+    /* background-color: rgb(180, 225, 252); */
 }
 
 main div:nth-child(3) section:nth-child(1){
@@ -148,11 +156,18 @@ textarea{
     width: 100px; 
     /* orientation: portrait; */
     background-color: lightskyblue; 
-    height: 100vh; 
+    height: 78vh; 
     left: 0; 
 
 }
 
+#conversation_page{
+    height: 78vh; 
+    left: 0; 
+    width: 475px; 
+    background-color:rgb(180, 225, 252);
+    position: relative;  
+}
 
 input.question{
 background-color: lightsalmon;
