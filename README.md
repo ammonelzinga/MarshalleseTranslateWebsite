@@ -1,6 +1,43 @@
 # first_repo
 my first repo 
 
+
+mongodb notes: 
+
+Look up on the mongo website for how to use their code. Check the collections to make sure it is uploading correctly. You'll need to make a mongo client with your url: 
+
+const url = `mongodb+srv://zingaboy:elzinga11@cluster0.syujyru.mongodb.net`;
+
+const client = new MongoClient(url);
+const userCollection = client.db('startup').collection('user');
+const scoreCollection = client.db('startup').collection('score');
+
+But from there you can use userColleciton.(whateverfunction). 
+
+For the express and node: 
+
+You can only have ONE "function" have the same endpoint. Tried having two different functions go to the same endpoint address and it doesn't work (at least the way I treid it). 
+
+Also it's important to send data in a {'key': 'value'} object/dictionary format. This took me hours upon hours upon hours to figure out, so don't make that same mistake again! You can use console.log and inspect the page on the html to see the status of your requests/responses from the endpoints. 
+
+You also can't console.log from database.js. That doesn't work. 
+
+Websocket: 
+Have a server.js and a client.js 
+
+make sure to:
+const { WebSocketServer } = require('ws');
+
+use onmessage, onclose, onopen websocket methods 
+
+remember to json.parse the data
+
+for authentication
+
+use the compare function to compare the password with the encrypted one that is saved to mongo database. You can use a response with a boolean of authentication = collection.token to change the state of the log in page depending on if the user is already logged in, or logged out. 
+
+use cookie-parser and b-crypt packages. 
+
 simon react notes: 
 
 1) The entire application with react can be on the same webpage. Instead of an html page for each functional peice, we have a React componenet. App.jsx is the parent of all components. It's interesing that even with this, on the website it'll have /play or /about at the end of the url. You can type in html in jsx. and class has to become className
