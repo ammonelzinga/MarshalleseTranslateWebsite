@@ -54,6 +54,24 @@ async function update_user_data(user, scoree, first, second, third, fourth, fift
   return user; 
 }
 
+async function update_user_friends(user, friend, value, valuee){
+  let friend_key = friend; 
+  let obj = {}; 
+  obj[friend_key] = value; 
+  const filter = {email: user}; 
+  const update = {$set: obj }; 
+  const options = {upsert: true}; 
+  await userCollection.updateOne(filter, update, options);
+  let send_request = user; 
+  let send_obj = {}; 
+  send_obj[send_request] = valuee; 
+  const fil = {email: friend}; 
+  const up = {$set: send_obj}; 
+  const opt = {upsert: true}; 
+  await userCollection.updateOne(fil, up, opt); 
+  return user; 
+}
+
 async function addScore(email, score) {
   const filter = {email: email};
   const update = {$set: {score: score}};
@@ -80,5 +98,6 @@ module.exports = {
   createUser,
   addScore,
   getHighScores,
-  update_user_data
+  update_user_data, 
+  update_user_friends
 };

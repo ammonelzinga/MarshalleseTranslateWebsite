@@ -159,6 +159,15 @@ secureApiRouter.patch('/test/:email', async(req, res) => {
   res.send('hello');//`{"test":"${req.params.email}"}`);
 });
 
+secureApiRouter.patch('/friend/:email', async(req, res) => {
+  console.log(req.body); 
+  console.log(req.body.email); 
+  console.log(req.body.value); 
+  console.log(req.body.key); 
+  await DB.update_user_friends(req.body.email, req.body.key, req.body.value, req.body.valuee); 
+  res.send("hello"); 
+}); 
+
 //update current user data
 // secureApiRouter.patch('/data/:data', async (req, res) => {
 //   console.log("it connected to patch"); 

@@ -5,6 +5,7 @@ const socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
 // Display that we have opened the webSocket
 socket.onopen = (event) => {
   appendMsg('system', 'websocket', 'connected');
+
 };
 
 // Display messages we receive from our friends
@@ -52,12 +53,12 @@ function appendMsg(cls, from, msg) {
     ;
 }
 // create list of friends
-// function appendfriend(cls, from){
-//   let friend_list = document.querySelector('#friends_list');
-//   friend_list.innerHTML = friend_list.innerHTML + 
-//   // '<tr><td><button class="${cls}">${from}</button></td> </tr>'
-//   `<tr><td><button class="${cls}">${from}</button></td></tr>`;
-// }
+function appendfriend(cls, from){
+  let friend_list = document.querySelector('#friends_list');
+  friend_list.innerHTML = friend_list.innerHTML + 
+  // '<tr><td><button class="${cls}">${from}</button></td> </tr>'
+  `<tr><td><button class="${cls}">${from}</button></td></tr>`;
+}
 
 // Send message on enter keystroke
 const input = document.querySelector('#new-msg');

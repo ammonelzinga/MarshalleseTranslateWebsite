@@ -26,6 +26,9 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="learn.html">Learn</a>
+                <li class="nav-item">
+                  <a class="nav-link" href="friends.html">Friends</a>
+                </li>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="index.html">Sign in</a>
@@ -47,11 +50,14 @@
     <main class="container-fluid text-center" id="main_id">
       <section id="friends_list" >
           <table id="friends_list_id" > 
+            <thead>
             <tr> 
              <th> <button class="chat_toggle" id="chat_toggle_id" value="Chat" style="background-color: lightskyblue;" onclick="show_conversation()">Chat</button> </th>
             </tr>
-            <tr class="friends_list_chat">
-            <td> <br> </td> </tr>
+            </thead>
+            <!-- <tr class="friends_list_chat" id="contact_list"> -->
+            <!-- <td> <br> </td> </tr> -->
+            <tbody class="friends_listtt" id="friends_listtt"></tbody>
              <!-- <tr> <td> Bill </td></tr> -->
              <!-- <tr>  <td>Jack</td> </tr> -->
              <!-- <tr> <td>tommy</td> </tr> -->

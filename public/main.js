@@ -183,10 +183,12 @@ function marshallese_translate(){
 
 
 function show_conversation () {
+  show_accepted_friends(); 
   let conversation = document.getElementById('conversation_page'); 
   if (conversation.style.display === "none"){
     conversation.style.display = "block"; 
     let x = document.getElementById('translate_boxes'); 
+    
     // main.style.align = "center";
     // main.style.justifyContent ="space-around"; 
     // x.style.paddingRight="40%"; 
@@ -197,5 +199,49 @@ function show_conversation () {
     // main.style.align = "center";
     // main.style.justifyContent ="space-around"; 
     x.style.paddingLeft="30%"; 
+  
           }
+}
+
+async function show_accepted_friends(){
+  let username = get_current_user(); 
+  let x = await getUser(username); 
+  console.log(x); 
+  const tableBodyEl = document.querySelector('#friends_listtt'); 
+      tableBodyEl.innerHTML = ""; 
+  for (const [index, [key, value]] of Object.entries(Object.entries(x))) {
+      if(index > 10){
+      console.log(`${index}: ${key} = ${value}`); 
+      
+      // if (scores.length) {
+        //update the dom with the scores
+      //   for (const [index, [key, value]] of Object.entries(Object.entries(x))) {
+         
+          // if(index > 4){
+          // console.log(`${index}: ${key} = ${value}`); 
+      //   for (const [i, score] of scores.entries()) {
+          if(value === 3){
+          const nameTdEl = document.createElement('td'); 
+          
+              // const scoreTdEl = document.createElement('td'); 
+              // let y = await getUser(key); 
+              // scoreTdEl.textContent = y.score; 
+              nameTdEl.textContent = key; 
+              const rowEl = document.createElement('tr'); 
+          rowEl.appendChild(nameTdEl); 
+          // rowEl.appendChild(scoreTdEl); 
+          tableBodyEl.appendChild(rowEl); 
+}}}}
+
+function get_current_user() {
+  return localStorage.getItem('userName') ?? 'Random Friend'; 
+}
+
+async function getUser(email){
+  const response = await fetch(`/api/user/${email}`); 
+  if (response.status === 200){
+      return response.json(); 
+  }
+  console.log('didnt worrrrrk'); 
+  return null; 
 }
