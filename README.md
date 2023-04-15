@@ -1,6 +1,32 @@
 # first_repo
 my first repo 
 
+reactivity notes: 
+
+jsx/react functions: 
+
+first import react: 
+
+import React from "https://cdn.skypack.dev/react";
+import ReactDOM from "https://cdn.skypack.dev/react-dom";
+
+The render function. Use this at the end. 
+ReactDOM.render(<Survey />, document.getElementById("root"));
+
+It's taking teh Survey component which we coded. The survery componenet can have nested components inside of it: 
+
+const Survey = () => {
+  const [text, updateText] = React.useState();
+
+  // When the color changes update the state
+  const myfunc = (e) => {
+    updateText(e.target.value);
+  };
+  return (
+    <div>
+    <add whatever component then further down the line make the code for that componenet> 
+    
+    also onChange is a good built in funciton. 
 
 mongodb notes: 
 
