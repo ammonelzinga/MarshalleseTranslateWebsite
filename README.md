@@ -1,6 +1,147 @@
 # first_repo
 my first repo 
 
+
+http status codes: 
+
+200 okay
+201- successful, 
+204 server fulfilled request no need to return info
+401 authentication required 
+404 not found
+500 internal server error
+301 permanent redirect
+
+
+cookies allow: 
+a server can store data on the client/browser
+
+Port 80 is reserved for HTTP
+
+HTTP status codes in the 300 range are for content redirects or caching
+
+Language is not a standard HTTP header. 
+
+(content-type, host, cookie are standard HTTP headers)
+
+For the request [get]/fav/george what is logged? paul george john
+
+app.use(function (req, res, next) {
+  console.log('Paul'); 
+   next(); 
+   }); 
+app.put('/fav/:person', (req, res, next) => {
+console.log('ringo'); 
+next(); 
+}); 
+
+app.get('/fav/:person', (req, res, next) => {
+console.log(req.params.person); 
+next(); 
+}); 
+
+app.get('/*', (req, res, next) => {
+console.log('john'); 
+next(); 
+}); 
+
+app.use((_req, res) => res.send(); 
+
+which express middleware will match this fetch request? app.delete(/fav\/(.*)/, () => {})
+
+const r = await fetch('/fav/ringo', {
+  method: 'delete'
+ }); 
+ 
+What document matches this mongoDB query? { $or: [{name:/J.*/}, {score: {$lt:3}}]}
+{name: "walke", score: -55}
+
+Why is hashing stored passwords important? 
+- it improves security by making the password unreadable
+
+
+given the following code what will console.log print? ClientServer:Hello
+<!--  --> executed on server: 
+const {WebSocketServer } = require('ws'); 
+const wss = new WebSocketServer({ port: 9900 }); 
+
+wss.on('connection', (ws) => {
+ws.on('message', (data) => {
+  const msg = String.fromCharcode(...data); 
+  ws.send('Server:${msg}');
+  }); 
+}); 
+
+<!--  -->Executed on browser: 
+const socket = new WebSocket('ws://localhost:9900'); 
+socket.onmessage = (event) => {
+console.log('Client:${event.data}'); 
+}; 
+socket.send("hello); 
+
+What value does WebSocket add to HTTP?
+It is peer to peer instead of client to server
+
+What is not a purpose of jsx? 
+to combine CSS, HTML, and Javascript
+
+What will component A initially display? tacofish
+
+const B = () => <b>burger</b>; 
+const C = () => <b>fish</b>;
+const D = () => <b>taco</b>;
+const A = () => {
+  const [v, updateV] = React.useState(false); 
+  const [x, updateX] = React.useState(B); 
+  
+  let o = <C />; 
+  if(v) {
+    o = <B />; 
+   }
+   
+  React.useEffect(() => updateX(D), [v]); 
+  
+  return (
+    <p onClick={() => updateV(true)}>{x}{o}</p>
+   ); 
+  }; 
+  
+what component will the URL `/burger` render? B 
+
+<BrowserRouter>
+  <div className = 'app'>
+    <nav>
+      <NavLink to=`/`>A</NavLink>
+      <NavLink to='/burger' element = {<B />} /> 
+    </nav> 
+    
+    <main> 
+      <Routes>
+        <Route path ='/' element = {<A />} exact />
+        <Route path='/burger' element={<B />} />
+        <Route path='*' element={<C />} />
+      </Routes>
+    </main>
+  </div>
+  </BrowserRouter>
+  
+  What does the command "NPM install ws" not do? 
+  Adds template code for websockets to your JavaScript
+  
+  (other wrong choices: locks the version of the websocket package for your application, adds the webscoket source code to the node_modules directory, adds a dependency to your package.json file)
+  
+  
+  You can use fetch in front-end and back-end code, true; 
+  
+  
+  Which of the following is not true about a linux daemon? 
+  Cannot fork other processes 
+  
+  (other wrong choices: executes independent of a user, starts when the computer is rebooted, pm2 is an example of a daemon) 
+  
+
+
+
 reactivity notes: 
 
 jsx/react functions: 
