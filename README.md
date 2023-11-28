@@ -1,4 +1,4 @@
-# first_repo
+# first_repo Notes for class
 my first repo 
 
 
